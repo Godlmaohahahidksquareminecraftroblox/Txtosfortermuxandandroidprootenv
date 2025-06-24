@@ -1,0 +1,24 @@
+#!//data/data/com.termux/files/usr/bin/bash
+
+# 1. Check if current directory is valid (not a deleted path)
+if ! realpath . >/dev/null 2>&1; then
+    echo "Error: Current directory does not exist (possibly deleted)"
+    exit 1
+fi
+
+# 2. Check if arguments are given
+if [ "$#" -eq 0 ]; then
+    echo "No arguments provided."
+    echo "usage: $0 <binary> [args.....]"
+    exit 1
+fi
+
+# 3. Check if $1 is a valid ELF binary
+if [ ! -f "$1" ] || [ ! -x "$1" ] || ! head -c 4 "$1" | grep -q $'\x7fELF'; then
+    echo "Error: '$1' is not a valid file(Doesnt exist or not ELF)"
+    exit 1
+fi
+
+SYS_PATH=$(realpath .)
+BINARY_AND_ARGS="$@"
+/bin/linker64 $SYS_PATH/$BINARY_AND_ARGS

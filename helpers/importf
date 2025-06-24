@@ -1,0 +1,39 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# 1. Check if current directory is valid (not a deleted path)
+if ! realpath . >/dev/null 2>&1; then
+    echo "Error: Current directory does not exist (possibly deleted)"
+    exit 1
+fi
+
+# 2. Check if arguments are given
+if [ "$#" -lt 2 ]; then
+    echo "No arguments provided."
+    echo "Usage: $0 <file in real sys> <path in txtOS>"
+    exit 1
+fi
+
+# 3. Check if $1 is a valid file
+if [ ! -f "$1" ]; then
+    echo "Error: '$1' (main system file) doesn't exist"
+    exit 1
+fi
+
+# 4. Check if $1 is an absolute path
+if [[ "$1" != /* ]]; then
+    echo "Error: '$1' is not an absolute path"
+    exit 1
+fi
+
+# 5. Check destination directory exists
+DESTDIR=$(dirname "$2")
+if [ ! -d "$DESTDIR" ]; then
+    echo "Error: Destination directory '$DESTDIR' does not exist"
+    exit 1
+fi
+
+# 6. Copy
+REAL_SYS_CWD=$(realpath .)
+INTXTOSPATH="$REAL_SYS_CWD/$2"
+REAL_SYS_PATH="$1"
+cp "$REAL_SYS_PATH" "$INTXTOSPATH"
