@@ -54,6 +54,13 @@ cp /system/lib64/libcutils.so ./        # Common utils
 cp /system/lib64/libcrypto.so ./        # OpenSSL (if present)
 cp /system/lib64/libssl.so ./           # OpenSSL (if present)
 cp /system/lib64/libsqlite.so ./        # SQLite (if present)
+
+# Copy additional libraries toybox might need(offline version only)
+
+cp /system/lib64/libbase.so ./         # Base Android lib
+cp /system/lib64/libcgrouprc.so ./     # Cgroup rc
+cp /system/lib64/libpcre2.so ./        # PCRE2 regex engine
+cp /system/lib64/libpackagelistparser.so ./  # Package list parser
 cd ../..
 
 # Gather apex libs
